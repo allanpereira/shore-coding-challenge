@@ -3,9 +3,5 @@ defmodule BowlingGame.Game do
 end
 
 defmodule BowlingGame.Frame do
-  defstruct rolls: []
-end
-
-defmodule BowlingGame.Roll do
-  defstruct pins: 0
+  defstruct pins_per_roll: []
 end

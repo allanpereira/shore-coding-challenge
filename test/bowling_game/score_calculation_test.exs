@@ -2,42 +2,81 @@ defmodule BowlingGame.ScoreCalculationTest do
 
   use ExUnit.Case, async: true
 
-  def createFrame(rolls) do
+  def create_frame(rolls) do
     %BowlingGame.Frame {
-      rolls: Enum.map(rolls, fn pins -> %BowlingGame.Roll { pins: pins } end)
+      pins_per_roll: rolls
+    }
+  end
+
+  def create_game_with_frames(frames) do
+    %BowlingGame.Game {
+      frames: frames
     }
   end
 
   test "calculate score for a perfect game" do
-    frames = for _i <- 1..12, do: createFrame([10])
+    game = create_game_with_frames([
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 10, 10])
+    ])
 
-    %BowlingGame.Game {
-      frames: frames
-    }
+    score = BowlingGame.calculate_score(game)
+
+    assert score == 300
   end
 
   test "calculate score when every frame is a spare" do
-    frames = Enum.chunk_every([5, 5, 3, 7, 6, 4, 2, 8, 1, 9, 8, 2, 5, 5, 4, 6, 7, 3, 9, 1, 5], 2)
-      |> Enum.map(fn pins -> createFrame(pins) end)
+    game = create_game_with_frames([
+      create_frame([5, 5]),
+      create_frame([3, 7]),
+      create_frame([6, 4]),
+      create_frame([2, 8]),
+      create_frame([1, 9]),
+      create_frame([8, 2]),
+      create_frame([5, 5]),
+      create_frame([4, 6]),
+      create_frame([7, 3]),
+      create_frame([9, 1, 5])
+    ])
 
-    %BowlingGame.Game {
-      frames: frames
-    }
+    score = BowlingGame.calculate_score(game)
+
+    assert score == 123
   end
 
   test "calculate score for a game with mixed cases" do
-    frames = Enum.chunk_every([6, 2, 7, 2, 3, 4, 8, 2, 9, 0, 10, 10, 10, 6, 3], 2) ++ [8, 0, 7]
+    game = create_game_with_frames([
+      create_frame([6, 2]),
+      create_frame([7, 2]),
+      create_frame([3, 4]),
+      create_frame([8, 2]),
+      create_frame([9, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([10, 0]),
+      create_frame([6, 3]),
+      create_frame([8, 0, 7])
+    ])
 
-    %BowlingGame.Game {
-      frames: frames
-    }
+    score = BowlingGame.calculate_score(game)
+
+    assert score == 153
   end
 
   test "calculate score when every roll misses the pins" do
-    frames = for _i <- 1..10, do: createFrame([0, 0])
+    frames = for _i <- 1..10, do: create_frame([0, 0])
 
-    %BowlingGame.Game {
-      frames: frames
-    }
+    game = create_game_with_frames(frames)
+    score = BowlingGame.calculate_score(game)
+
+    assert score == 0
   end
 end
