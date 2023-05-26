@@ -1,18 +1,23 @@
-# BowlingGame
+# Bowling Game
 
-To start your Phoenix server:
+This application was bootstraped using [Phoenix Framework](https://www.phoenixframework.org/). To start the server:
 
   * Run `mix setup` to install and setup dependencies
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-## Learn more
+## Running tests
+* Run `mix test`
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+## Relevant implementation
+- [Score Calculation](https://github.com/allanpereira/shore-coding-challenge/blob/main/lib/bowling_game.ex)
+- [Tests](https://github.com/allanpereira/shore-coding-challenge/blob/main/test/bowling_game/score_calculation_test.exs)
+
+## TODOs
+- [ ] Fix issues when creating the game state in the tests. These issues are making the tests to fail.
+- [ ] Increase code coverage, adding tests and possibly fixing the implementation to edge cases.
+- [ ] Implement the API itself (priority 3 in the requirements)
+- [ ] Increment the information in README file
+- [ ] Add the possibility to run the application using a Docker container
