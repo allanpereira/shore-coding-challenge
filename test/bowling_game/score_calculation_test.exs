@@ -49,7 +49,7 @@ defmodule BowlingGame.ScoreCalculationTest do
 
     score = BowlingGame.calculate_score(game)
 
-    assert score == 123
+    assert score == 150
   end
 
   test "calculate score for a game with mixed cases" do
@@ -63,12 +63,12 @@ defmodule BowlingGame.ScoreCalculationTest do
       create_frame([10, 0]),
       create_frame([10, 0]),
       create_frame([6, 3]),
-      create_frame([8, 0, 7])
+      create_frame([8, 0, 0])
     ])
 
     score = BowlingGame.calculate_score(game)
 
-    assert score == 153
+    assert score == 144
   end
 
   test "calculate score when every roll misses the pins" do

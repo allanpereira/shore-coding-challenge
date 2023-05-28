@@ -16,7 +16,6 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 - [Tests](https://github.com/allanpereira/shore-coding-challenge/blob/main/test/bowling_game/score_calculation_test.exs)
 
 ## TODOs
-- [ ] Fix issues when creating the game state in the tests. These issues are making the tests to fail.
 - [ ] Increase code coverage, adding tests and possibly fixing the implementation to edge cases.
 - [ ] Implement the API itself (priority 3 in the requirements)
 - [ ] Increment the information in README file

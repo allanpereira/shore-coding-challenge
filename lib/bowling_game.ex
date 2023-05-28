@@ -11,18 +11,19 @@ defmodule BowlingGame do
     game.frames
     |> Enum.with_index
     |> Enum.reduce(0, fn {frame, index}, acc ->
-      acc + calculate_score_for_frame(index, frame, game, acc)
+      acc + calculate_score_for_frame(index, frame, game)
     end)
   end
 
-  def calculate_score_for_frame(index, frame, game, acc) do
+  def calculate_score_for_frame(index, frame, game) do
     is_strike = hd(frame.pins_per_roll) == 10
     is_spare = Enum.at(frame.pins_per_roll, 0) + Enum.at(frame.pins_per_roll, 1, 0) == 10
+    is_frame_the_last = is_frame_the_last(index, game.frames)
 
     cond do
-      is_strike -> 10 + bonus_strike(index, game.frames)
-      is_spare -> 10 + bonus_spare(index, game.frames)
-      true -> hd(frame.pins_per_roll) + hd(tl(frame.pins_per_roll))
+      is_strike and not is_frame_the_last -> 10 + bonus_strike(index, game.frames)
+      is_spare  and not is_frame_the_last -> 10 + bonus_spare(index, game.frames)
+      true -> Enum.sum(frame.pins_per_roll)
     end
   end
 
@@ -40,7 +41,7 @@ defmodule BowlingGame do
   end
 
   def find_next_rolls(frame_index, frames) do
-    is_frame_the_last = frame_index >= length(frames) - 1
+    is_frame_the_last = is_frame_the_last(frame_index, frames)
 
     if is_frame_the_last, do: { nil, nil }, else: find_next_rolls_from_frame(frame_index + 1, frames)
   end
@@ -51,18 +52,18 @@ defmodule BowlingGame do
     first_roll = get_first_roll_of_frame(frame_index, frames)
     first_roll_is_strike = first_roll == 10
 
-    second_roll = if first_roll_is_strike, do: get_first_roll_of_frame(frame_index + 1, frames), else: Enum.at(frame.pins_per_roll, 1)
+    is_frame_the_last = is_frame_the_last(frame_index, frames)
+
+    second_roll = if first_roll_is_strike and not is_frame_the_last, do: get_first_roll_of_frame(frame_index + 1, frames), else: Enum.at(frame.pins_per_roll, 1)
 
     {first_roll, second_roll}
   end
 
   def get_first_roll_of_frame(frame_index, frames) do
-    is_frame_the_last = frame_index >= length(frames) - 1
-
-    if is_frame_the_last, do: nil, else: hd(Enum.at(frames, frame_index).pins_per_roll)
+    hd(Enum.at(frames, frame_index).pins_per_roll)
   end
 
-  def find_next_frame(frame_index, frames) do
-    if frame_index >= length(frames) - 1, do: nil, else: Enum.at(frames, frame_index + 1)
+  def is_frame_the_last(frame_index, frames) do
+    frame_index >= length(frames) - 1
   end
 end
